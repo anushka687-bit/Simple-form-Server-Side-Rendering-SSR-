@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submission Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0ede8;
+      font-family: 'DM Sans', sans-serif;
+      padding: 40px 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 48px 44px 44px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+      text-align: center;
+    }
+
+    .check {
+      font-size: 3rem;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #999;
+      font-size: 0.9rem;
+      margin-bottom: 36px;
+    }
+
+    .data-block {
+      background: #faf9f7;
+      border: 1.5px solid #e0dcd6;
+      border-radius: 14px;
+      padding: 28px 30px;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ece9e4;
+    }
+
+    .data-row:last-child { border-bottom: none; }
+
+    .data-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #aaa;
+    }
+
+    .data-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 14px 36px;
+      background: #1a1a2e;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover { background: #c4a882; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="check">✅</div>
+    <h1>Data Recorded</h1>
+    <p class="subtitle">Here's what we received from you</p>
+
+    <div class="data-block">
+      <div class="data-row">
+        <span class="data-label">Name</span>
+        <span class="data-value"><%= name %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Email</span>
+        <span class="data-value"><%= email %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Gender</span>
+        <span class="data-value"><%= gender %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Age</span>
+        <span class="data-value"><%= age %></span>
+      </div>
+    </div>
+
+    <a href="/" class="back-btn">← Go Back</a>
+  </div>
+</body>
+</html>

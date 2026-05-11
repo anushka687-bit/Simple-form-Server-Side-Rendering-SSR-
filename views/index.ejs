@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Info Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0ede8;
+      font-family: 'DM Sans', sans-serif;
+      padding: 40px 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 48px 44px 44px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #888;
+      font-size: 0.92rem;
+      margin-bottom: 36px;
+    }
+
+    .field {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"] {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e0dcd6;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: #1a1a2e;
+      background: #faf9f7;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: #c4a882;
+      box-shadow: 0 0 0 3px rgba(196,168,130,0.15);
+      background: #fff;
+    }
+
+    /* Gender radio buttons styled as toggle chips */
+    .gender-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .gender-group input[type="radio"] {
+      display: none;
+    }
+
+    .gender-group label {
+      flex: 1;
+      text-align: center;
+      padding: 11px 0;
+      border: 1.5px solid #e0dcd6;
+      border-radius: 10px;
+      background: #faf9f7;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: none;
+      letter-spacing: 0;
+      transition: all 0.18s;
+      user-select: none;
+    }
+
+    .gender-group input[type="radio"]:checked + label {
+      background: #1a1a2e;
+      border-color: #1a1a2e;
+      color: #fff;
+    }
+
+    .gender-group label:hover {
+      border-color: #c4a882;
+      color: #c4a882;
+    }
+
+    .gender-group input[type="radio"]:checked + label:hover {
+      color: #fff;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 15px;
+      background: #1a1a2e;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .submit-btn:hover { background: #c4a882; }
+    .submit-btn:active { transform: scale(0.98); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Tell Us About You</h1>
+    <p class="subtitle">Fill in your details below</p>
+
+    <form action="/submit" method="POST">
+
+      <div class="field">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Arjun Mehta" required />
+      </div>
+
+      <div class="field">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      </div>
+
+      <div class="field">
+        <label>Gender</label>
+        <div class="gender-group">
+          <input type="radio" id="male"   name="gender" value="Male"   required />
+          <label for="male">♂ Male</label>
+
+          <input type="radio" id="female" name="gender" value="Female" />
+          <label for="female">♀ Female</label>
+
+          <input type="radio" id="other"  name="gender" value="Other"  />
+          <label for="other">⚧ Other</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" placeholder="e.g. 22" min="1" max="120" required />
+      </div>
+
+      <button type="submit" class="submit-btn">Submit →</button>
+    </form>
+  </div>
+</body>
+</html>
