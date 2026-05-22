@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submission Successful</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <div class="result-hero">
+    <span class="result-icon">&#9989;</span>
+    <h1>You're all set!</h1>
+    <p>Your details have been recorded successfully</p>
+  </div>
+
+  <div class="glass-card" style="max-width:520px; margin:0 auto;">
+    <div class="section-title">Submitted Details</div>
+
+    <div class="data-block">
+      <div class="data-row">
+        <span class="data-label">Name</span>
+        <span class="data-value"><%= entry.name %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Email</span>
+        <span class="data-value"><%= entry.email %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Phone</span>
+        <span class="data-value"><%= entry.phone %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Gender</span>
+        <span class="data-value"><%= entry.gender %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Age</span>
+        <span class="data-value"><%= entry.age %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Submitted At</span>
+        <span class="data-value"><%= entry.submittedAt %></span>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <a href="/" class="btn-primary">&larr; Submit Another</a>
+      <a href="/users" class="btn-outline">View All Users</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

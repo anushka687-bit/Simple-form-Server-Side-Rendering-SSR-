@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submission Result</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="card result-card">
+    <div class="tick">&#9989;</div>
+    <h1>Data Recorded</h1>
+    <p class="subtitle">Here's what we received from you</p>
+
+    <div class="data-block">
+      <div class="data-row">
+        <span class="data-label">Name</span>
+        <span class="data-value"><%= entry.name %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Email</span>
+        <span class="data-value"><%= entry.email %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Phone</span>
+        <span class="data-value"><%= entry.phone %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Gender</span>
+        <span class="data-value"><%= entry.gender %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Age</span>
+        <span class="data-value"><%= entry.age %></span>
+      </div>
+      <div class="data-row">
+        <span class="data-label">Submitted</span>
+        <span class="data-value"><%= entry.submittedAt %></span>
+      </div>
+    </div>
+
+    <a href="/" class="back-btn">&larr; Submit Another</a>
+    <a href="/users" class="back-btn">View All &rarr;</a>
+  </div>
+</body>
+</html>

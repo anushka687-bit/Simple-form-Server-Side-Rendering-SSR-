@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Success!</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <div class="result-hero">
+    <span class="result-icon">🎉</span>
+    <h1>Registration Complete!</h1>
+    <p>Your profile has been recorded successfully</p>
+  </div>
+
+  <div class="glass-card" style="max-width:540px; margin:0 auto;">
+    <div class="section-title">Your Details</div>
+    <div class="data-block">
+      <div class="data-row"><span class="data-label">Name</span>    <span class="data-value"><%= entry.name %></span></div>
+      <div class="data-row"><span class="data-label">Email</span>   <span class="data-value"><%= entry.email %></span></div>
+      <div class="data-row"><span class="data-label">Phone</span>   <span class="data-value"><%= entry.phone %></span></div>
+      <div class="data-row"><span class="data-label">Gender</span>  <span class="data-value"><%= entry.gender %></span></div>
+      <div class="data-row"><span class="data-label">Age</span>     <span class="data-value"><%= entry.age %></span></div>
+      <div class="data-row"><span class="data-label">Country</span> <span class="data-value"><%= entry.country %></span></div>
+      <div class="data-row"><span class="data-label">Skills</span>  <span class="data-value"><%= entry.skills.length ? entry.skills.join(', ') : 'None' %></span></div>
+      <div class="data-row"><span class="data-label">Submitted</span><span class="data-value"><%= entry.submittedAt %></span></div>
+    </div>
+    <div class="result-actions">
+      <a href="/" class="btn-primary">&larr; Register Another</a>
+      <a href="/users" class="btn-outline">View All Users</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

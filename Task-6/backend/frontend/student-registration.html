@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Registration</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+
+<div class="page-wrapper">
+
+  <div class="hero">
+    <div class="hero-badge">🎓 Student Management System</div>
+    <h1>Student <span>Registration</span></h1>
+    <p>Fill in all the required details below</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Form Completion</span>
+      <span id="progressPct">0% complete</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div id="apiMsg" class="api-msg"></div>
+
+  <form id="regForm">
+
+    <!-- Basic Information -->
+    <div class="card">
+      <div class="section-title">🪪 Basic Information</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="firstName">First Name <span class="req">*</span></label>
+          <input type="text" id="firstName" placeholder="First name"/>
+          <p class="err-msg" id="firstNameErr">First name is required.</p>
+        </div>
+        <div class="field">
+          <label for="surname">Surname <span class="req">*</span></label>
+          <input type="text" id="surname" placeholder="Surname"/>
+          <p class="err-msg" id="surnameErr">Surname is required.</p>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="age">Age <span class="req">*</span></label>
+          <input type="number" id="age" placeholder="e.g. 20" min="1" max="100"/>
+          <p class="err-msg" id="ageErr">Age must be 1–100.</p>
+        </div>
+        <div class="field">
+          <label>Gender <span class="req">*</span></label>
+          <div class="gender-group">
+            <input type="radio" id="male"   name="gender" value="Male"/>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="Female"/>
+            <label for="female">Female</label>
+            <input type="radio" id="other"  name="gender" value="Other"/>
+            <label for="other">Other</label>
+          </div>
+          <p class="err-msg" id="genderErr">Please select gender.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic Information -->
+    <div class="card">
+      <div class="section-title">📚 Academic Information</div>
+
+      <div class="field">
+        <label for="collegeName">College Name <span class="req">*</span></label>
+        <input type="text" id="collegeName" placeholder="e.g. Delhi University"/>
+        <p class="err-msg" id="collegeNameErr">College name is required.</p>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="course">Course <span class="req">*</span></label>
+          <select id="course">
+            <option value="">Select course</option>
+            <option>BA</option><option>BBA</option><option>BBM</option>
+            <option>BCA</option><option>BCom</option><option>BE</option>
+            <option>BEd</option><option>BFA</option><option>BHM</option>
+            <option>BSc</option><option>BSW</option><option>BTech</option>
+            <option>CA</option><option>CFA</option><option>Diploma</option>
+            <option>LLB</option><option>MA</option><option>MBA</option>
+            <option>MCA</option><option>MCom</option><option>MEd</option>
+            <option>MSc</option><option>MTech</option><option>PGDM</option>
+            <option>PhD</option><option>Other</option>
+          </select>
+          <p class="err-msg" id="courseErr">Please select a course.</p>
+        </div>
+        <div class="field">
+          <label for="branch">Branch <span class="req">*</span></label>
+          <select id="branch">
+            <option value="">Select branch</option>
+            <option>Accounting</option><option>Advertising & Marketing</option>
+            <option>Artificial Intelligence</option><option>Banking & Finance</option>
+            <option>Biotechnology</option><option>Business Analytics</option>
+            <option>Civil Engineering</option><option>Computer Science</option>
+            <option>Cyber Security</option><option>Data Analysis</option>
+            <option>Data Science</option><option>Economics</option>
+            <option>Electronics</option><option>English Literature</option>
+            <option>Environmental Science</option><option>Event Management</option>
+            <option>Fashion Design</option><option>Fine Arts</option>
+            <option>Graphic Design</option><option>History</option>
+            <option>Hotel Management</option><option>Human Resource Management</option>
+            <option>Information Technology</option><option>International Business</option>
+            <option>Journalism & Mass Communication</option><option>Law</option>
+            <option>Logistics & Supply Chain</option><option>Marketing</option>
+            <option>Mathematics</option><option>Mechanical Engineering</option>
+            <option>Media Studies</option><option>Operations Management</option>
+            <option>Philosophy</option><option>Physics</option>
+            <option>Political Science</option><option>Psychology</option>
+            <option>Public Administration</option><option>Retail Management</option>
+            <option>Social Work</option><option>Sociology</option>
+            <option>Statistics</option><option>Taxation</option>
+            <option>Tourism & Travel</option><option>Other</option>
+          </select>
+          <p class="err-msg" id="branchErr">Please select a branch.</p>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="startYear">Start Year <span class="req">*</span></label>
+          <select id="startYear">
+            <option value="">Select year</option>
+            <script>for(let y=2010;y<=2030;y++) document.write(`<option>${y}</option>`);</script>
+          </select>
+          <p class="err-msg" id="startYearErr">Start year is required.</p>
+        </div>
+        <div class="field">
+          <label for="endYear">End Year <span class="req">*</span></label>
+          <select id="endYear">
+            <option value="">Select year</option>
+            <script>for(let y=2010;y<=2035;y++) document.write(`<option>${y}</option>`);</script>
+          </select>
+          <p class="err-msg" id="endYearErr">End year is required.</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="cgpa">CGPA <span class="req">*</span></label>
+        <input type="number" id="cgpa" placeholder="e.g. 8.5" min="0" max="10" step="0.01"/>
+        <p class="err-msg" id="cgpaErr">CGPA must be 0–10.</p>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="card">
+      <div class="section-title">📞 Contact Information</div>
+
+      <div class="field">
+        <label for="email">Email Address <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="student@example.com"/>
+        <p class="err-msg" id="emailErr">Enter a valid email.</p>
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone Number <span class="req">*</span></label>
+        <input type="tel" id="phone" placeholder="10-digit number"/>
+        <p class="err-msg" id="phoneErr">Must be a valid 10-digit number.</p>
+      </div>
+
+      <div class="field">
+        <label for="linkedin">LinkedIn Profile <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+        <input type="text" id="linkedin" placeholder="https://linkedin.com/in/yourprofile"/>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="city">City <span class="req">*</span></label>
+          <input type="text" id="city" placeholder="e.g. Mumbai"/>
+          <p class="err-msg" id="cityErr">City is required.</p>
+        </div>
+        <div class="field">
+          <label for="pincode">Pincode <span class="req">*</span></label>
+          <input type="text" id="pincode" placeholder="6-digit pincode"/>
+          <p class="err-msg" id="pincodeErr">Enter a valid 6-digit pincode.</p>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="state">State <span class="req">*</span></label>
+          <input type="text" id="state" placeholder="e.g. Maharashtra"/>
+          <p class="err-msg" id="stateErr">State is required.</p>
+        </div>
+        <div class="field">
+          <label for="country">Country <span class="req">*</span></label>
+          <select id="country">
+            <option value="">Select country</option>
+            <option>Afghanistan</option><option>Albania</option><option>Algeria</option>
+            <option>Argentina</option><option>Armenia</option><option>Australia</option>
+            <option>Austria</option><option>Azerbaijan</option><option>Bahrain</option>
+            <option>Bangladesh</option><option>Belarus</option><option>Belgium</option>
+            <option>Bhutan</option><option>Bolivia</option><option>Brazil</option>
+            <option>Bulgaria</option><option>Cambodia</option><option>Canada</option>
+            <option>Chile</option><option>China</option><option>Colombia</option>
+            <option>Croatia</option><option>Cuba</option><option>Cyprus</option>
+            <option>Czech Republic</option><option>Denmark</option><option>Ecuador</option>
+            <option>Egypt</option><option>Estonia</option><option>Ethiopia</option>
+            <option>Finland</option><option>France</option><option>Georgia</option>
+            <option>Germany</option><option>Ghana</option><option>Greece</option>
+            <option>Hungary</option><option>Iceland</option><option>India</option>
+            <option>Indonesia</option><option>Iran</option><option>Iraq</option>
+            <option>Ireland</option><option>Israel</option><option>Italy</option>
+            <option>Jamaica</option><option>Japan</option><option>Jordan</option>
+            <option>Kazakhstan</option><option>Kenya</option><option>Kuwait</option>
+            <option>Latvia</option><option>Lebanon</option><option>Libya</option>
+            <option>Lithuania</option><option>Luxembourg</option><option>Malaysia</option>
+            <option>Maldives</option><option>Malta</option><option>Mexico</option>
+            <option>Mongolia</option><option>Morocco</option><option>Myanmar</option>
+            <option>Nepal</option><option>Netherlands</option><option>New Zealand</option>
+            <option>Nigeria</option><option>Norway</option><option>Oman</option>
+            <option>Pakistan</option><option>Panama</option><option>Peru</option>
+            <option>Philippines</option><option>Poland</option><option>Portugal</option>
+            <option>Qatar</option><option>Romania</option><option>Russia</option>
+            <option>Saudi Arabia</option><option>Serbia</option><option>Singapore</option>
+            <option>Slovakia</option><option>Slovenia</option><option>South Africa</option>
+            <option>South Korea</option><option>Spain</option><option>Sri Lanka</option>
+            <option>Sweden</option><option>Switzerland</option><option>Syria</option>
+            <option>Taiwan</option><option>Tanzania</option><option>Thailand</option>
+            <option>Tunisia</option><option>Turkey</option><option>Uganda</option>
+            <option>Ukraine</option><option>United Arab Emirates</option>
+            <option>United Kingdom</option><option>United States</option>
+            <option>Uruguay</option><option>Uzbekistan</option><option>Venezuela</option>
+            <option>Vietnam</option><option>Yemen</option><option>Zambia</option>
+            <option>Zimbabwe</option>
+          </select>
+          <p class="err-msg" id="countryErr">Please select a country.</p>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn" disabled>SUBMIT</button>
+
+  </form>
+
+ <div class="nav" style="margin-top:20px;">
+  <a href="index.html">&larr; Home</a>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

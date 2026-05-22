@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+
+<!-- Header -->
+<div class="dash-header">
+  <div>
+    <h1>🎓 Admin Dashboard</h1>
+    <span id="adminEmail"></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+   <a href="student-registration.html" class="btn-outline" style="padding:8px 16px;font-size:0.82rem;">+ Add Student</a>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </div>
+</div>
+
+<div class="dash-body">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="totalCount">—</div>
+      <div class="stat-lbl">Total Students</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="maleCount">—</div>
+      <div class="stat-lbl">Male</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="femaleCount">—</div>
+      <div class="stat-lbl">Female</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="courseCount">—</div>
+      <div class="stat-lbl">Courses</div>
+    </div>
+  </div>
+
+  <div id="apiMsg" class="api-msg" style="margin-bottom:16px;"></div>
+
+  <!-- Search + Filter -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Search by name, email or student ID..."/>
+    <select id="courseFilter">
+      <option value="">All Courses</option>
+      <option>BA</option><option>BBA</option><option>BCA</option><option>BCom</option>
+      <option>BSc</option><option>BTech</option><option>MBA</option><option>MCA</option>
+      <option>MCom</option><option>MSc</option><option>MTech</option><option>Other</option>
+    </select>
+    <select id="genderFilter">
+      <option value="">All Genders</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap" id="tableWrap">
+    <div class="empty-state"><p>⏳ Loading students...</p></div>
+  </div>
+
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <h2>✏️ Edit Student</h2>
+    <input type="hidden" id="edit_id"/>
+
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>First Name</label>
+        <input type="text" id="edit_firstName"/>
+      </div>
+      <div class="modal-field">
+        <label>Surname</label>
+        <input type="text" id="edit_surname"/>
+      </div>
+    </div>
+
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>Age</label>
+        <input type="number" id="edit_age"/>
+      </div>
+      <div class="modal-field">
+        <label>Gender</label>
+        <select id="edit_gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-field">
+      <label>College Name</label>
+      <input type="text" id="edit_collegeName"/>
+    </div>
+
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>Course</label>
+        <select id="edit_course">
+          <option>BA</option><option>BBA</option><option>BCA</option><option>BCom</option>
+          <option>BSc</option><option>BTech</option><option>MBA</option><option>MCA</option>
+          <option>MSc</option><option>MTech</option><option>Other</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Branch</label>
+        <input type="text" id="edit_branch"/>
+      </div>
+    </div>
+
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>Start Year</label>
+        <input type="number" id="edit_startYear" min="2000" max="2035"/>
+      </div>
+      <div class="modal-field">
+        <label>End Year</label>
+        <input type="number" id="edit_endYear" min="2000" max="2035"/>
+      </div>
+    </div>
+
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>CGPA</label>
+        <input type="number" id="edit_cgpa" step="0.01" min="0" max="10"/>
+      </div>
+      <div class="modal-field">
+        <label>Phone</label>
+        <input type="tel" id="edit_phone"/>
+      </div>
+    </div>
+
+    <div class="modal-field">
+      <label>Email</label>
+      <input type="email" id="edit_email"/>
+    </div>
+
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>City</label>
+        <input type="text" id="edit_city"/>
+      </div>
+      <div class="modal-field">
+        <label>State</label>
+        <input type="text" id="edit_state"/>
+      </div>
+    </div>
+
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>Pincode</label>
+        <input type="text" id="edit_pincode"/>
+      </div>
+      <div class="modal-field">
+        <label>Country</label>
+        <input type="text" id="edit_country"/>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button onclick="saveEdit()" class="btn-primary">Save Changes</button>
+      <button onclick="closeModal()" class="btn-outline">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API    = 'http://localhost:5000';
+  let allUsers = [];
+  let token    = localStorage.getItem('adminToken');
+
+  // ── Redirect if not logged in ──
+  if (!token) window.location.href = 'admin-login.html';
+
+  // ── Show admin email ──
+  document.getElementById('adminEmail').textContent = localStorage.getItem('adminEmail') || '';
+
+  // ── Theme ──
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    document.body.classList.toggle('dark');
+    this.textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+  });
+
+  // ── Logout ──
+  document.getElementById('logoutBtn').addEventListener('click', function () {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminEmail');
+    window.location.href = 'admin-login.html';
+  });
+
+  // ── Fetch all students ──
+  async function fetchStudents() {
+    try {
+      const res  = await fetch(API + '/api/students', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+
+      // If token expired
+      if (res.status === 401) {
+        localStorage.removeItem('adminToken');
+        window.location.href = 'admin-login.html';
+        return;
+      }
+
+      const json = await res.json();
+      if (json.success) {
+        allUsers = json.data;
+        updateStats(allUsers);
+        renderTable(allUsers);
+      }
+    } catch (err) {
+      showMsg('❌ Cannot connect to server.', false);
+    }
+  }
+
+  // ── Update stat cards ──
+  function updateStats(users) {
+    document.getElementById('totalCount').textContent  = users.length;
+    document.getElementById('maleCount').textContent   = users.filter(u => u.gender === 'Male').length;
+    document.getElementById('femaleCount').textContent = users.filter(u => u.gender === 'Female').length;
+    const courses = [...new Set(users.map(u => u.course))];
+    document.getElementById('courseCount').textContent = courses.length;
+  }
+
+  // ── Render table ──
+  function renderTable(users) {
+    const wrap = document.getElementById('tableWrap');
+    if (users.length === 0) {
+      wrap.innerHTML = `<div class="empty-state"><div class="ei">📋</div><p>No students found.</p></div>`;
+      return;
+    }
+    wrap.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Stu. ID</th><th>Name</th><th>Age</th><th>Gender</th>
+            <th>College</th><th>Course</th><th>Branch</th>
+            <th>Years</th><th>CGPA</th><th>Email</th>
+            <th>Phone</th><th>City</th><th>Country</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${users.map(u => `
+            <tr>
+              <td><strong>${u.studentId || '—'}</strong></td>
+              <td><strong>${u.firstName} ${u.surname}</strong></td>
+              <td>${u.age}</td>
+              <td><span class="gbadge ${u.gender.toLowerCase()}">${u.gender}</span></td>
+              <td>${u.collegeName}</td>
+              <td>${u.course}</td>
+              <td>${u.branch}</td>
+              <td>${u.startYear}–${u.endYear}</td>
+              <td>${u.cgpa}</td>
+              <td>${u.email}</td>
+              <td>${u.phone}</td>
+              <td>${u.city}</td>
+              <td>${u.country}</td>
+              <td style="white-space:nowrap;">
+                <button class="action-btn edit"   onclick="openEdit('${u._id}')">✏️ Edit</button>
+                <button class="action-btn delete" onclick="deleteStudent('${u._id}')">🗑 Delete</button>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`;
+  }
+
+  // ── Search + Filter ──
+  function filterUsers() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const course = document.getElementById('courseFilter').value;
+    const gender = document.getElementById('genderFilter').value;
+    renderTable(allUsers.filter(u => {
+      const fullName = (u.firstName + ' ' + u.surname).toLowerCase();
+      const ms = fullName.includes(search) ||
+                 u.email.toLowerCase().includes(search) ||
+                 (u.studentId || '').toLowerCase().includes(search);
+      const mc = course ? u.course === course : true;
+      const mg = gender ? u.gender === gender : true;
+      return ms && mc && mg;
+    }));
+  }
+
+  document.getElementById('searchInput').addEventListener('input',  filterUsers);
+  document.getElementById('courseFilter').addEventListener('change', filterUsers);
+  document.getElementById('genderFilter').addEventListener('change', filterUsers);
+
+  // ── Delete student ──
+  async function deleteStudent(id) {
+    if (!confirm('Delete this student permanently?')) return;
+    try {
+      const res  = await fetch(API + '/api/students/' + id, {
+        method:  'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const json = await res.json();
+      showMsg((json.success ? '✅ ' : '❌ ') + json.message, json.success);
+      if (json.success) fetchStudents();
+    } catch (err) {
+      showMsg('❌ Delete failed.', false);
+    }
+  }
+
+  // ── Open edit modal ──
+  function openEdit(id) {
+    const u = allUsers.find(u => u._id === id);
+    if (!u) return;
+    document.getElementById('edit_id').value         = u._id;
+    document.getElementById('edit_firstName').value  = u.firstName;
+    document.getElementById('edit_surname').value    = u.surname;
+    document.getElementById('edit_age').value        = u.age;
+    document.getElementById('edit_gender').value     = u.gender;
+    document.getElementById('edit_collegeName').value= u.collegeName;
+    document.getElementById('edit_course').value     = u.course;
+    document.getElementById('edit_branch').value     = u.branch;
+    document.getElementById('edit_startYear').value  = u.startYear;
+    document.getElementById('edit_endYear').value    = u.endYear;
+    document.getElementById('edit_cgpa').value       = u.cgpa;
+    document.getElementById('edit_email').value      = u.email;
+    document.getElementById('edit_phone').value      = u.phone;
+    document.getElementById('edit_city').value       = u.city;
+    document.getElementById('edit_state').value      = u.state;
+    document.getElementById('edit_pincode').value    = u.pincode;
+    document.getElementById('edit_country').value    = u.country;
+    document.getElementById('editModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('editModal').style.display = 'none';
+  }
+
+  // ── Save edit ──
+  async function saveEdit() {
+    const id   = document.getElementById('edit_id').value;
+    const body = {
+      firstName:   document.getElementById('edit_firstName').value,
+      surname:     document.getElementById('edit_surname').value,
+      age:         document.getElementById('edit_age').value,
+      gender:      document.getElementById('edit_gender').value,
+      collegeName: document.getElementById('edit_collegeName').value,
+      course:      document.getElementById('edit_course').value,
+      branch:      document.getElementById('edit_branch').value,
+      startYear:   document.getElementById('edit_startYear').value,
+      endYear:     document.getElementById('edit_endYear').value,
+      cgpa:        document.getElementById('edit_cgpa').value,
+      email:       document.getElementById('edit_email').value,
+      phone:       document.getElementById('edit_phone').value,
+      city:        document.getElementById('edit_city').value,
+      state:       document.getElementById('edit_state').value,
+      pincode:     document.getElementById('edit_pincode').value,
+      country:     document.getElementById('edit_country').value
+    };
+    try {
+      const res  = await fetch(API + '/api/students/' + id, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body:    JSON.stringify(body)
+      });
+      const json = await res.json();
+      showMsg((json.success ? '✅ ' : '❌ ') + json.message, json.success);
+      if (json.success) { closeModal(); fetchStudents(); }
+    } catch (err) {
+      showMsg('❌ Update failed.', false);
+    }
+  }
+
+  // ── Show message ──
+  function showMsg(msg, success) {
+    const el = document.getElementById('apiMsg');
+    el.textContent      = msg;
+    el.style.display    = 'block';
+    el.style.background = success ? 'rgba(16,185,129,0.1)' : 'rgba(220,38,38,0.1)';
+    el.style.border     = `1.5px solid ${success ? 'rgba(16,185,129,0.3)' : 'rgba(220,38,38,0.3)'}`;
+    el.style.color      = success ? '#10b981' : '#dc2626';
+    setTimeout(() => el.style.display = 'none', 4000);
+  }
+
+  // ── Init ──
+  fetchStudents();
+</script>
+</body>
+</html>

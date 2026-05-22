@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Submissions</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="card users-card">
+    <h1>All Submissions</h1>
+    <p class="subtitle"><%= allEntries.length %> record(s) stored in memory</p>
+
+    <% if (allEntries.length === 0) { %>
+      <p class="empty">No submissions yet. <a href="/">Be the first!</a></p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% allEntries.forEach(function(e, i) { %>
+            <tr>
+              <td><%= i + 1 %></td>
+              <td><strong><%= e.name %></strong></td>
+              <td><%= e.email %></td>
+              <td><span class="badge"><%= e.gender %></span></td>
+              <td><%= e.age %></td>
+              <td><%= e.submittedAt %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+
+    <div class="nav" style="margin-top:24px;">
+      <a href="/">&larr; Back to Form</a>
+    </div>
+  </div>
+</body>
+</html>

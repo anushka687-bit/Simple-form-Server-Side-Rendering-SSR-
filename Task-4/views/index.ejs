@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle">☀️ Light</button>
+
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">✦ Secure Registration</div>
+    <h1>Create Your <span>Profile</span></h1>
+    <p>Fill in your details to get started</p>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Form Completion</span>
+      <span id="progressPct">0% complete</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Layout: preview LEFT, form RIGHT -->
+  <div class="form-layout">
+
+    <!-- ── LIVE PREVIEW (left) ── -->
+    <div class="preview-card">
+      <h3>Live Preview</h3>
+      <div class="preview-avatar" id="previewAvatar">?</div>
+      <div class="preview-name"  id="previewName">Your Name</div>
+      <div class="preview-email" id="previewEmail">your@email.com</div>
+      <div class="preview-rows">
+        <div class="preview-row">
+          <span class="plabel">Phone</span>
+          <span class="pval" id="previewPhone">—</span>
+        </div>
+        <div class="preview-row">
+          <span class="plabel">Gender</span>
+          <span class="pval" id="previewGender">—</span>
+        </div>
+        <div class="preview-row">
+          <span class="plabel">Age</span>
+          <span class="pval" id="previewAge">—</span>
+        </div>
+        <div class="preview-row">
+          <span class="plabel">State</span>
+          <span class="pval" id="previewState">—</span>
+        </div>
+        <div class="preview-row">
+          <span class="plabel">Country</span>
+          <span class="pval" id="previewCountry">—</span>
+        </div>
+      </div>
+      <div class="preview-skills" id="previewSkills">
+        <span style="color:var(--muted);font-size:0.78rem">No skills yet</span>
+      </div>
+    </div>
+
+    <!-- ── FORM (right) ── -->
+    <div class="glass-card">
+
+      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="error-box">
+          <% errors.forEach(e => { %><p>⚠ <%= e %></p><% }) %>
+        </div>
+      <% } %>
+
+      <form id="regForm" action="/submit" method="POST">
+
+        <div class="section-title">Personal Info</div>
+
+        <!-- Name -->
+        <div class="field">
+          <label for="name">Full Name <span class="req">*</span></label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" maxlength="50"
+            value="<%= typeof formData !== 'undefined' ? formData.name || '' : '' %>"/>
+          <div class="char-counter" id="nameCounter">0/50</div>
+          <p class="err-msg" id="nameErr">Name must be at least 2 characters.</p>
+        </div>
+
+        <!-- Email + Phone -->
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@example.com"
+              value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"/>
+            <p class="err-msg" id="emailErr">Enter a valid email.</p>
+          </div>
+          <div class="field">
+            <label for="phone">Phone <span class="req">*</span></label>
+            <input type="text" id="phone" name="phone" placeholder="10-digit number"
+              value="<%= typeof formData !== 'undefined' ? formData.phone || '' : '' %>"/>
+            <p class="err-msg" id="phoneErr">Must be 10 digits.</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section-title">Security</div>
+
+        <!-- Password -->
+        <div class="field">
+          <label for="password">Password <span class="req">*</span></label>
+          <div class="pw-wrap">
+            <input type="password" id="password" name="password" placeholder="Create a strong password"/>
+            <button type="button" class="pw-toggle">👁</button>
+          </div>
+          <div class="strength-bar">
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+          </div>
+          <div class="strength-label" id="strengthLabel">—</div>
+          <p class="err-msg" id="passwordErr">Min 8 chars, uppercase, lowercase, number & special char.</p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="field">
+          <label for="confirmPassword">Confirm Password <span class="req">*</span></label>
+          <div class="pw-wrap">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password"/>
+            <button type="button" class="pw-toggle">👁</button>
+          </div>
+          <p class="err-msg"  id="confirmPasswordErr">Passwords do not match.</p>
+          <p class="hint-msg" id="confirmPasswordHint">✓ Passwords match!</p>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section-title">About You</div>
+
+        <!-- Gender -->
+        <div class="field">
+          <label>Gender <span class="req">*</span></label>
+          <div class="gender-group">
+            <% ['Male','Female','Other'].forEach(function(g) { %>
+              <input type="radio" id="<%= g.toLowerCase() %>" name="gender" value="<%= g %>"
+                <%= (typeof formData !== 'undefined' && formData.gender === g) ? 'checked' : '' %>/>
+              <label for="<%= g.toLowerCase() %>"><%= g %></label>
+            <% }) %>
+          </div>
+          <p class="err-msg" id="genderErr">Please select a gender.</p>
+        </div>
+
+        <!-- Age (own line) -->
+        <div class="field">
+          <label for="age">Age <span class="req">*</span></label>
+          <input type="number" id="age" name="age" placeholder="Your age" min="1" max="120"
+            value="<%= typeof formData !== 'undefined' ? formData.age || '' : '' %>"/>
+          <p class="err-msg" id="ageErr">Age must be 1–120.</p>
+        </div>
+
+        <!-- State + Country (same line) -->
+        <div class="field-row">
+          <div class="field">
+            <label for="state">State <span class="req">*</span></label>
+            <input type="text" id="state" name="state" placeholder="e.g. Gujarat"
+              value="<%= typeof formData !== 'undefined' ? formData.state || '' : '' %>"/>
+            <p class="err-msg" id="stateErr">Please enter your state.</p>
+          </div>
+          <div class="field">
+            <label for="country">Country <span class="req">*</span></label>
+            <select id="country" name="country">
+              <option value="">Select country</option>
+              <% ['India','United States','United Kingdom','Canada','Australia','Germany','France','Japan','Other'].forEach(c => { %>
+                <option value="<%= c %>" <%= (typeof formData !== 'undefined' && formData.country === c) ? 'selected' : '' %>><%= c %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="field">
+          <label>Skills <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+          <div class="skills-grid">
+            <% ['HTML','CSS','JavaScript','Node.js','Python','React','SQL','Git'].forEach(function(s) { %>
+              <label class="skill-chip">
+                <input type="checkbox" name="skills" value="<%= s %>"/>
+                <%= s %>
+              </label>
+            <% }) %>
+          </div>
+        </div>
+
+        <!-- Profile picture -->
+        <div class="field">
+          <label for="profilePic">Profile Picture <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+          <input type="file" id="profilePic" name="profilePic" accept="image/*"
+            style="color:var(--text); padding:8px 0; background:none; border:none;"/>
+        </div>
+
+        <div class="divider"></div>
+
+        <button type="submit" class="submit-btn" id="submitBtn" disabled>
+          Submit &rarr;
+        </button>
+
+      </form>
+    </div>
+
+  </div><!-- end form-layout -->
+
+  <div class="nav" style="margin-top:28px;">
+    <a href="/users">View All Users &rarr;</a>
+  </div>
+
+</div>
+
+<script src="/script.js"></script>
+</body>
+</html>

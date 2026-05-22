@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration Successful</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+
+<div class="success-wrap">
+  <div class="success-card">
+    <span class="success-icon">🎉</span>
+    <h1>Registration Successful!</h1>
+    <p>Student has been added to the system.</p>
+    <div class="success-id" id="successId">Loading...</div>
+    <p style="margin-bottom:24px;">Your details have been saved successfully.</p>
+    <div class="success-actions">
+      
+      <a href="student-registration.html" class="btn-primary">+ Register Another</a>
+      <a href="index.html" class="btn-primary">    Back To Home</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Theme
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    document.body.classList.toggle('dark');
+    this.textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+  });
+
+  // Show student ID from URL param
+  const params   = new URLSearchParams(window.location.search);
+  const sid      = params.get('id');
+  const sname    = params.get('name');
+  const sidEl    = document.getElementById('successId');
+  if (sid)   sidEl.textContent = 'Student ID: ' + sid;
+  if (sname) document.querySelector('p').textContent = 'Welcome, ' + sname + '! Your details have been saved.';
+</script>
+</body>
+</html>

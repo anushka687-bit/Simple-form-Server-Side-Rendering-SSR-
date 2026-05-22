@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Users</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <div class="users-hero">
+    <h1>All Registrations</h1>
+    <p>Everyone who has signed up so far</p>
+    <div class="count-badge"><%= allEntries.length %> Record(s)</div>
+  </div>
+
+  <% if (allEntries.length === 0) { %>
+    <div class="table-card">
+      <div class="empty-state">
+        <div class="ei">📋</div>
+        <p>No submissions yet. <a href="/">Be the first!</a></p>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
+            <th>Gender</th><th>Age</th><th>Country</th><th>Skills</th><th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% allEntries.forEach(function(e, i) { %>
+            <tr>
+              <td><%= i+1 %></td>
+              <td><strong><%= e.name %></strong></td>
+              <td><%= e.email %></td>
+              <td><%= e.phone %></td>
+              <td><span class="gbadge <%= e.gender.toLowerCase() %>"><%= e.gender %></span></td>
+              <td><%= e.age %></td>
+              <td><%= e.country %></td>
+              <td><%= e.skills.length ? e.skills.join(', ') : '—' %></td>
+              <td><%= e.submittedAt %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+
+  <div class="nav" style="margin-top:24px;">
+    <a href="/">&larr; Back to Form</a>
+  </div>
+
+</div>
+</body>
+</html>

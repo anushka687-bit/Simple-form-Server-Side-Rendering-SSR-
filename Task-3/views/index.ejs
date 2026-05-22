@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Registration</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">&#128274; Secure Registration</div>
+    <h1>Create Your <span>Profile</span></h1>
+    <p>Fill in your details below to get started</p>
+
+    <!-- Steps -->
+    <div class="steps-bar">
+      <div class="step active">
+        <div class="step-dot">1</div>
+        <div class="step-label">Details</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-label">Review</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-label">Done</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form card -->
+  <div class="glass-card">
+
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="error-box">
+        <% errors.forEach(function(err) { %>
+          <p>&#9888; <%= err %></p>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <div class="section-title">Personal Info</div>
+
+    <form id="regForm" action="/submit" method="POST" onsubmit="return validateForm()">
+
+      <!-- Name -->
+      <div class="field">
+        <label for="name">Full Name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" placeholder="Enter your name"
+          value="<%= typeof formData !== 'undefined' ? formData.name || '' : '' %>"/>
+        <p id="nameErr" class="err-msg">Name must be at least 2 characters.</p>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label for="email">Email Address <span class="req">*</span></label>
+        <input type="email" id="email" name="email" placeholder="Enter your email"
+          value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"/>
+        <p id="emailErr" class="err-msg">Enter a valid email address.</p>
+      </div>
+
+      <!-- Phone -->
+      <div class="field">
+        <label for="phone">Phone Number <span class="req">*</span></label>
+        <input type="text" id="phone" name="phone" placeholder="Enter your phone number"
+          value="<%= typeof formData !== 'undefined' ? formData.phone || '' : '' %>"/>
+        <p id="phoneErr" class="err-msg">Enter a valid 10-digit phone number.</p>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-title">About You</div>
+
+      <!-- Gender -->
+      <div class="field">
+        <label>Gender <span class="req">*</span></label>
+        <div class="gender-group">
+          <% ['Male','Female','Other'].forEach(function(g) { %>
+            <input type="radio" id="<%= g.toLowerCase() %>" name="gender" value="<%= g %>"
+              <%= (typeof formData !== 'undefined' && formData.gender === g) ? 'checked' : '' %>/>
+            <label for="<%= g.toLowerCase() %>"><%= g %></label>
+          <% }) %>
+        </div>
+        <p id="genderErr" class="err-msg">Please select a gender.</p>
+      </div>
+
+      <!-- Age -->
+      <div class="field">
+        <label for="age">Age <span class="req">*</span></label>
+        <input type="number" id="age" name="age" placeholder="Enter your age" min="1" max="120"
+          value="<%= typeof formData !== 'undefined' ? formData.age || '' : '' %>"/>
+        <p id="ageErr" class="err-msg">Age must be between 1 and 120.</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <button type="submit" class="submit-btn">Submit &rarr;</button>
+    </form>
+  </div>
+
+  <!-- Info strip -->
+  <div class="info-strip">
+    <div class="info-item"><div class="info-dot"></div> Secure & Encrypted</div>
+    <div class="info-item"><div class="info-dot"></div> Data stays private</div>
+    <div class="info-item"><div class="info-dot"></div> Instant confirmation</div>
+  </div>
+
+  <div class="nav" style="margin-top:24px;">
+    <a href="/users">View All Users &rarr;</a>
+  </div>
+
+</div>
+<script src="/validation.js"></script>
+</body>
+</html>

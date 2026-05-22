@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration Successful</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+
+<div class="page-wrapper">
+
+  <div class="result-hero">
+    <span class="result-icon">🎉</span>
+    <h1>Registration Successful!</h1>
+    <p>Student has been added to the system</p>
+  </div>
+
+  <div class="card" style="max-width:620px;margin:0 auto 24px;">
+    <div class="section-title">📋 Student Details</div>
+    <div id="resultData" style="color:var(--muted);text-align:center;padding:30px;">
+      ⏳ Loading details...
+    </div>
+  </div>
+
+  <div style="display:flex;gap:12px;max-width:620px;margin:0 auto;flex-wrap:wrap;">
+    <a href="/"      class="btn-primary">+ Register Another</a>
+    <a href="/users" class="btn-outline">View All Students</a>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    document.body.classList.toggle('dark');
+    this.textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+  });
+
+  async function loadResult() {
+    try {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (!id) { document.getElementById('resultData').innerHTML = '<p style="color:var(--err)">No ID found. <a href="/">Go back</a></p>'; return; }
+
+      const res  = await fetch('/api/users/' + id);
+      const json = await res.json();
+      if (!json.success) { document.getElementById('resultData').innerHTML = '<p style="color:var(--err)">Student not found.</p>'; return; }
+
+      const u = json.data;
+      const rows = [
+        ['Student ID',   u.studentId],
+        ['Full Name',    u.fullName],
+        ['Age',          u.age],
+        ['Gender',       u.gender],
+        ['College',      u.collegeName],
+        ['Course',       u.course],
+        ['Branch',       u.branch],
+        ['Start Year',   u.startYear],
+        ['End Year',     u.endYear],
+        ['CGPA',         u.cgpa],
+        ['Email',        u.email],
+        ['Phone',        u.phone],
+        ['LinkedIn',     u.linkedin || '—'],
+        ['City',         u.city],
+        ['Pincode',      u.pincode],
+        ['State',        u.state],
+        ['Country',      u.country],
+        ['Registered On',u.createdAt]
+      ];
+
+      document.getElementById('resultData').innerHTML = `
+        <div class="data-block">
+          ${rows.map(r => `
+            <div class="data-row">
+              <span class="data-label">${r[0]}</span>
+              <span class="data-value">${r[1]}</span>
+            </div>`).join('')}
+        </div>`;
+    } catch (err) {
+      document.getElementById('resultData').innerHTML = '<p style="color:var(--err)">Error: ' + err.message + '</p>';
+    }
+  }
+
+  loadResult();
+</script>
+</body>
+</html>

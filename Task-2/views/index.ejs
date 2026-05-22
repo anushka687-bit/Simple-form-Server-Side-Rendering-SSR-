@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Registration</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="card">
+    <h1>User Registration</h1>
+    <p class="subtitle">Fill in your details below</p>
+
+    <!-- Server-side errors -->
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="error-box">
+        <% errors.forEach(function(err) { %>
+          <p>&#9888; <%= err %></p>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <form id="regForm" action="/submit" method="POST" onsubmit="return validateForm()">
+
+      <!-- Name -->
+      <div class="field">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Arjun Mehta"
+          value="<%= typeof formData !== 'undefined' ? formData.name || '' : '' %>"/>
+        <p id="nameErr" class="err-msg">Name must be at least 2 characters.</p>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com"
+          value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"/>
+        <p id="emailErr" class="err-msg">Enter a valid email address.</p>
+      </div>
+
+      <!-- Phone -->
+      <div class="field">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" placeholder="e.g. 9876543210"
+          value="<%= typeof formData !== 'undefined' ? formData.phone || '' : '' %>"/>
+        <p id="phoneErr" class="err-msg">Enter a valid 10-digit phone number.</p>
+      </div>
+
+      <!-- Gender — horizontal buttons: Male, Female, Other -->
+      <div class="field">
+        <label>Gender</label>
+        <div class="gender-group">
+          <% ['Male','Female','Other'].forEach(function(g) { %>
+            <label class="<%= (typeof formData !== 'undefined' && formData.gender === g) ? 'selected' : '' %>">
+              <input type="radio" name="gender" value="<%= g %>"
+                <%= (typeof formData !== 'undefined' && formData.gender === g) ? 'checked' : '' %>
+                onchange="highlightGender(this)"/>
+              <%= g %>
+            </label>
+          <% }) %>
+        </div>
+        <p id="genderErr" class="err-msg">Please select a gender.</p>
+      </div>
+
+      <!-- Age -->
+      <div class="field">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" placeholder="e.g. 22" min="1" max="120"
+          value="<%= typeof formData !== 'undefined' ? formData.age || '' : '' %>"/>
+        <p id="ageErr" class="err-msg">Age must be between 1 and 120.</p>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit &rarr;</button>
+    </form>
+
+    <div class="nav">
+      <a href="/users">View all submissions &rarr;</a>
+    </div>
+  </div>
+
+  <script src="/validation.js"></script>
+</body>
+</html>
